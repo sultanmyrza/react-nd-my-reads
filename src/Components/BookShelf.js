@@ -12,7 +12,7 @@ class BookShelf extends React.Component {
                   <h2 className="bookshelf-title">{title}</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                    {
+                    {   
                         books.map(book => (
                             <li key={book.title}>
                                 <div className="book">
@@ -21,7 +21,7 @@ class BookShelf extends React.Component {
                                     <div className="book-shelf-changer">
                                     <select 
                                         onChange={(event) => this.handleBookCategoryChange(book, event.target.value)}
-                                        selected={book.shelf}>
+                                        defaultValue={book.shelf}>
                                         <option value="none" selected disabled>Move to...</option>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
