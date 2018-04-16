@@ -4,11 +4,7 @@ import BookShelf from './BookShelf';
 
 class ListBooks extends React.Component {
     render() {
-      let { books, onUpdateBook, updating } = this.props;
-      let currentlyReading = books.filter(book => book.shelf === "currentlyReading");
-      let wantToRead = books.filter(book => book.shelf === "wantToRead");
-      let read = books.filter(book => book.shelf === "read");
-       
+      let { onUpdateBook, updating, shelves } = this.props;  
       return(
           <div className="list-books">
           <div className="list-books-title">
@@ -16,9 +12,14 @@ class ListBooks extends React.Component {
           </div>
           <div className="list-books-content">
             <div>
-              <BookShelf key="1" title="Currently Reading" books={currentlyReading} onUpdateBook={onUpdateBook} updating={updating} />
-              <BookShelf key="2" title="Want To Read" books={wantToRead} onUpdateBook={onUpdateBook} updating={updating} />
-              <BookShelf key="3" title="Read" books={read} onUpdateBook={onUpdateBook} updating={updating} />
+              { shelves.map(shelf => 
+                <BookShelf 
+                  key={shelf.id} 
+                  title={shelf.title} 
+                  books={shelf.books} 
+                  onUpdateBook={onUpdateBook} 
+                  updating={updating}/>
+              )}
             </div>
           </div>
           <div className="open-search">

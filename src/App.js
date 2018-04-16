@@ -8,12 +8,35 @@ import * as BooksApi from './Services/BooksApi';
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    shelves: [],
+  }
+
+  sortByShelves = (books) => {
+    let shelves = [
+      {
+        id: "currentlyReading",
+        title: "Currently Reading",
+        books: books.filter(book => book.shelf === "currentlyReading")
+      },
+      {
+        id: "wantToRead",
+        title: "Want To Read",
+        books: books.filter(book => book.shelf === "wantToRead")
+      },
+      {
+        id: "read",
+        title: "Read",
+        books: books.filter(book => book.shelf === "read")
+      },
+    ];
+    return shelves;
   }
 
   componentDidMount() {
     BooksApi.getAll().then(data => {
-      this.setState({ books: data })
+      this.setState({ 
+        shelves:this.sortByShelves(data) 
+      })
     })
   }
 
@@ -26,7 +49,7 @@ class BooksApp extends React.Component {
               // TODO: handle if res is erro
               BooksApi.getAll().then(data => {
                 this.setState({ 
-                  books: data,
+                  shelves: this.sortByShelves(data),
                   updating: false,
                 })
               })
@@ -38,7 +61,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route exact path="/" render={() => (
           <ListBooks 
-            books={this.state.books}
+            shelves={this.state.shelves}
             onUpdateBook={this.updateBook}
             updating={this.state.updating}
           />
