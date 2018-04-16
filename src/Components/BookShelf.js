@@ -5,8 +5,19 @@ class BookShelf extends React.Component {
     handleBookCategoryChange = (book, category) => {
         this.props.onUpdateBook(book, category);
     }
+    getCover = (book) => {
+        let cover = {
+            width: 128, height: 193, backgroundRepeat: 'no-repeat',
+            backgroundImage: 'url("http://icons.iconarchive.com/icons/icons8/windows-8/128/City-No-Camera-icon.png")'
+        }
+        if (book.imageLinks.smallThumbnail) {
+            cover.backgroundImage = `url("${book.imageLinks.smallThumbnail}")`
+        } 
+        return cover
+    }
     render() {
         let {title, books, updating} = this.props;
+        console.log('BOOKS', books);
         return(
             <div className="bookshelf">
                   <h2 className="bookshelf-title">{title}</h2>
@@ -17,7 +28,7 @@ class BookShelf extends React.Component {
                             <li key={book.title}>
                                 <div className="book">
                                 <div className="book-top">
-                                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.smallThumbnail}")` }}></div>
+                                    <div className="book-cover" style={this.getCover(book)}></div>
                                     <div className="book-shelf-changer">
                                     <select 
                                         onChange={(event) => this.handleBookCategoryChange(book, event.target.value)}
