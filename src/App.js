@@ -9,6 +9,7 @@ import * as BooksApi from './Services/BooksApi';
 class BooksApp extends React.Component {
   state = {
     shelves: [],
+    booksInShelves: []
   }
 
   sortByShelves = (books) => {
@@ -33,10 +34,12 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    BooksApi.getAll().then(data => {
+    BooksApi.getAll().then(books => {
       this.setState({ 
-        shelves:this.sortByShelves(data) 
+        shelves: this.sortByShelves(books),
+        booksInShelves: books
       })
+      console.log('state.booksInShelves', this.state.booksInShelves);
     })
   }
 
@@ -47,9 +50,10 @@ class BooksApp extends React.Component {
     BooksApi.update(bookToUpdate, shelf)
             .then(res => {
               // TODO: handle if res is erro
-              BooksApi.getAll().then(data => {
+              BooksApi.getAll().then(books => {
                 this.setState({ 
-                  shelves: this.sortByShelves(data),
+                  shelves: this.sortByShelves(books),
+                  booksInShelves: books,
                   updating: false,
                 })
               })
@@ -68,7 +72,9 @@ class BooksApp extends React.Component {
         )} />
 
         <Route path="/search" render={() => (
-          <SearchBooks />
+          <SearchBooks 
+            booksInShelves={ this.state.booksInShelves }
+            onUpdateBook={this.updateBook}/>
         )} />
       </div>
     )
