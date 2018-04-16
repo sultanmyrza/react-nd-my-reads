@@ -10,7 +10,7 @@ class BookShelf extends React.Component {
             width: 128, height: 193, backgroundRepeat: 'no-repeat',
             backgroundImage: 'url("http://icons.iconarchive.com/icons/icons8/windows-8/128/City-No-Camera-icon.png")'
         }
-        if (book.imageLinks.smallThumbnail) {
+        if (book.imageLinks) {
             cover.backgroundImage = `url("${book.imageLinks.smallThumbnail}")`
         } 
         return cover
