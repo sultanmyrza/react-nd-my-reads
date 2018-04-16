@@ -10,10 +10,14 @@ class SearchBook extends React.Component {
     }
     onSearch = (event) => {
         let query = event.target.value;
+        console.log('search for ', query);
         BooksAPI.search(query)
-                .then(data => {
-                    console.log(data);
-                    this.setState({books: data})
+                .then(response => {
+                    if (response.error) {
+                        this.setState({books: []})
+                    } else {
+                        this.setState({books: response})
+                    }
                 })
     }
 
