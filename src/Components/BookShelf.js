@@ -17,7 +17,6 @@ class BookShelf extends React.Component {
     }
     render() {
         let {title, books, updating} = this.props;
-        console.log('BOOKS', books);
         return(
             <div className="bookshelf">
                   <h2 className="bookshelf-title">{title}</h2>
