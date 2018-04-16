@@ -6,19 +6,40 @@ import * as BooksAPI from '../Services/BooksApi';
 
 class SearchBook extends React.Component {
     state = {
-        books: []
+        syncedBooks: []
+    }
+    syncBooks = (booksInShelves, searchedBooks) => {
+        console.log('booksInShelves', booksInShelves);
+        let syncedBooks = searchedBooks.map(searchedBook => {
+            let bookInShelf = booksInShelves.find(bookInShelf => bookInShelf.title === searchedBook.title);
+            if ( bookInShelf ){
+                return bookInShelf;
+            } else {
+                searchedBook.shelf="none";
+                return searchedBook;
+            }
+        });
+        return syncedBooks;
     }
     onSearch = (event) => {
         let query = event.target.value;
-        this.setState({books: []})
+        this.setState({ books: [] })
         console.log(query, query.length);
-        if(query.length > 0) {
+        if(query.length === 0) {
+            this.setState({
+                syncedBooks: []
+            })
+        } else {
             BooksAPI.search(query)
-            .then(response => {
-                this.setState({books: response})
+            .then(searchedBooks => {
+                console.log('searchedBooks', searchedBooks)
+                let syncedBooks = this.syncBooks(this.props.booksInShelves, searchedBooks);
+                console.log('synced books', syncedBooks);
+                this.setState({ syncedBooks: syncedBooks})
+            }).catch(response => {
+                console.log(response);
             })
         }
-        
     }
 
     render() {
@@ -42,7 +63,7 @@ class SearchBook extends React.Component {
                 </div>
                 </div>
                 <div className="search-books-results">
-                <BookShelf books={this.state.books} />
+                <BookShelf books={this.state.syncedBooks} onUpdateBook={this.props.onUpdateBook}/>
                 </div>
             </div>
         )
